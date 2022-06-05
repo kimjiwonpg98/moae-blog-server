@@ -1,11 +1,11 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 export class TypeOrmConfigService {
   constructor(private env: { [k: string]: string | undefined }) {}
 
   private getValue(key: string, throwOnMissing = true): string {
     const value = this.env[key];
-    console.log(value);
     if (!value && throwOnMissing) {
       throw new Error(`config Error - missing env.${key}`);
     }
@@ -22,6 +22,9 @@ export class TypeOrmConfigService {
       password: this.getValue('RDS_PASSWORD'),
       database: this.getValue('RDS_DB_NAME'),
       entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: false,
+      namingStrategy: new SnakeNamingStrategy(),
+      logging: true,
     };
   }
 }

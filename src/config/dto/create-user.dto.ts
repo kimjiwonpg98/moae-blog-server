@@ -1,15 +1,11 @@
 import { IsString, IsDefined, IsEmail } from 'class-validator';
 
-export class WriteDto {
+export class CreateUserDto {
   @IsString()
   @IsDefined()
-  title: string;
-
-  @IsString()
-  @IsDefined()
-  context: string;
+  nickname: string;
 
   @IsEmail()
   @IsDefined()
-  writer: string;
+  email: string;
 }

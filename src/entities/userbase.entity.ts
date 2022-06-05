@@ -1,24 +1,43 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
+import { PostWrite } from './post-write.entity';
 
-@Entity('USERBASES')
-export class User {
-  @PrimaryGeneratedColumn()
+@Entity('USER_BASES')
+@Unique(['email', 'nickname'])
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+    comment: '순서',
+  })
   no: number;
 
   @Column({
-    type: 'text',
-    name: 'NAME',
+    type: 'varchar',
+    length: 30,
+    name: 'nickname',
   })
   nickname: string;
 
   @Column({
-    type: 'text',
-    name: 'NAME',
+    type: 'varchar',
+    length: 50,
+    name: 'email',
   })
   email: string;
 
-  @CreateDateColumn({
-    default: 'CURRENT_TIMESTAMP',
+  @Column({
+    type: 'timestamp',
+    name: 'create_at',
+    default: () => 'now()',
   })
-  createAt: Date;
+  createAt: string;
+
+  @OneToMany(() => PostWrite, (postWrite) => postWrite.writer)
+  writer: PostWrite[];
 }

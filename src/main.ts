@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { TypeOrmConfigService } from './typeorm/typeormConfig.service';
 import * as fs from 'fs';
-import compression from 'compression';
-import bodyParser from 'body-parser';
+import * as compression from 'compression';
+import { ConfigModule } from '@nestjs/config';
+import * as express from 'express';
 
 async function bootstrap() {
   await makeOrmConfig();
@@ -18,16 +19,19 @@ async function bootstrap() {
     }),
   );
 
-  app.use(compression);
+  ConfigModule.forRoot({
+    isGlobal: true,
+  });
+
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(compression());
   app.setGlobalPrefix('moae/api');
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
 
   await app.listen(process.env.PORT);
 }
 
 async function makeOrmConfig() {
-  console.log(process.env.PORT);
   const typeOrmConfigService = new TypeOrmConfigService(process.env);
   const typeOrmConfig = typeOrmConfigService.getTypeOrmConfig();
 

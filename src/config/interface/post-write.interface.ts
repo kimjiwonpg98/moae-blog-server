@@ -1,5 +1,5 @@
 export interface postWriteReqConfig {
   title: string;
-  content: string;
+  context: string;
   writer: string;
 }

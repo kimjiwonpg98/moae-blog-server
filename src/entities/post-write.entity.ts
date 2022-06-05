@@ -1,16 +1,19 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './userbase.entity';
 
-@Entity('POSTBOARD')
-export class PostWriteEntity {
+@Entity('POST_BOARDS')
+export class PostWrite extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     comment: '순서',
@@ -19,30 +22,38 @@ export class PostWriteEntity {
 
   @Column({
     type: 'varchar',
-    length: 30,
+    length: 50,
     comment: '제목',
   })
   title: string;
 
-  @OneToMany(() => User, (user) => user.no)
-  @JoinColumn({ name: 'nickname' })
-  writerNo: User[];
+  @ManyToOne(() => User, {
+    nullable: false,
+  })
+  @JoinColumn({
+    name: 'writer_no',
+  })
+  writer: User;
 
   @Column({
     type: 'text',
-    name: 'CONTENT',
+    name: 'context',
     comment: '내용',
   })
-  content: string;
+  context: string;
 
-  @CreateDateColumn({
-    type: 'datetime',
-    default: 'CURRENT_TIMESTAMP',
+  @Column({
+    type: 'timestamp',
+    name: 'create_at',
+    default: () => 'now()',
   })
-  createAt: Date;
+  createAt: string;
 
-  @UpdateDateColumn({
-    default: 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+  @Column({
+    type: 'timestamp',
+    name: 'update_at',
+    onUpdate: 'now()',
+    default: () => 'now()',
   })
-  updateAt: Date;
+  updateAt: string;
 }
