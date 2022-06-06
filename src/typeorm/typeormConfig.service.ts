@@ -1,5 +1,4 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 export class TypeOrmConfigService {
   constructor(private env: { [k: string]: string | undefined }) {}
@@ -23,8 +22,8 @@ export class TypeOrmConfigService {
       database: this.getValue('RDS_DB_NAME'),
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: false,
-      namingStrategy: new SnakeNamingStrategy(),
       logging: true,
+      ssl: false,
     };
   }
 }

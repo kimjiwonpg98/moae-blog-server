@@ -1,4 +1,4 @@
-import { IsString, IsDefined, IsEmail } from 'class-validator';
+import { IsString, IsDefined, IsEmail, IsNumber } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -8,4 +8,8 @@ export class CreateUserDto {
   @IsEmail()
   @IsDefined()
   email: string;
+
+  @IsNumber()
+  @IsDefined()
+  year: number;
 }

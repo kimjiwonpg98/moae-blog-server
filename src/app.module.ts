@@ -5,9 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostWriteModule } from './post-write/post-write.module';
 import { UserModule } from './user/user.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), PostWriteModule, ConfigModule.forRoot(), UserModule],
+  imports: [TypeOrmModule.forRoot(), PostWriteModule, ConfigModule.forRoot(), UserModule, AdminModule],
   controllers: [AppController],
   providers: [AppService],
 })
