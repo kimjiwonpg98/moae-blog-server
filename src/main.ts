@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as compression from 'compression';
 import { ConfigModule } from '@nestjs/config';
 import * as express from 'express';
+import CatchException from './error/CatchExceptions';
 
 async function bootstrap() {
   await makeOrmConfig();
@@ -14,10 +15,13 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
+      whitelist: true,
       skipMissingProperties: true,
       transform: true,
     }),
   );
+
+  app.useGlobalFilters(new CatchException());
 
   ConfigModule.forRoot({
     isGlobal: true,
